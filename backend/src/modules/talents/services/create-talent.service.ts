@@ -13,12 +13,12 @@ class CreateTalentService{
     ){}
 
     async execute(
-        talent: CreateOrUpdateTalentDto
+        talentDto: CreateOrUpdateTalentDto
     ):Promise<Talent>{
         try{
             return this.talentRepository.save(
-                await this.talentRepository.create(talent)
-            )
+                this.talentRepository.create(talentDto)
+                )
         } catch (error) {
             console.error(error)
             throw new InternalServerErrorException(error)

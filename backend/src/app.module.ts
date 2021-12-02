@@ -27,7 +27,7 @@ import { TalentsModule } from './modules/talents/talents.module';
     ,
     UserModule,
     SkillsModule,
-    TalentsModule,
+    TalentsModule
   ],
   controllers: [],
   providers: [],

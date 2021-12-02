@@ -11,9 +11,18 @@ class ListSkillsService{
         private skillRepository: Repository<Skill>
     ){}
 
-    async execute():Promise<Array<Skill>>
+    async execute(
+        ids?:number[]
+    ):Promise<Array<Skill>>
     {
         try {
+
+            if(ids){
+                return this.skillRepository.findByIds(ids,{
+                    select:['id','name','description']
+                })
+            }
+
             return this.skillRepository.find({
                 select:['id','name','description']
             })

@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put } from '@nestjs/common';
-import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put, Query } from '@nestjs/common';
+import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JoiValidatePipe } from 'src/common/pipes/joi-valid.pipe';
 import {CreateOrUpdateSkillDto} from './dto/create-update-skill.dto'
 import { SaveSkillsSchema } from './schema/skills.schema';
@@ -22,8 +22,11 @@ export class SkillsController {
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll(){
-    return await this.listSkillService.execute()
+  @ApiQuery({name:'skills_id',type:Number,required:false,isArray:true})
+  async findAll(
+    @Query('skills_id') skills_id:number[]
+  ){
+    return await this.listSkillService.execute(skills_id)
   }
 
   @HttpCode(HttpStatus.OK)

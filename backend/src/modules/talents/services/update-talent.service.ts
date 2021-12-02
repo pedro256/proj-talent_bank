@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateOrUpdateTalentDto } from "../dto/create-update-talent.dto";
 import { Talent } from "../entities/talent.entity";
+import TalentParser from "../parser/talent-parser.parser";
 
 @Injectable()
 class UpdateTalentService{
@@ -25,7 +26,8 @@ class UpdateTalentService{
             throw new NotFoundException();
         }
 
-        const talentToUp:Talent = this.talentRepository.create(talent)
+        const parser = new TalentParser()
+        const talentToUp = parser.parseCreateDtoToEntity(talent)
 
         await this.talentRepository.save({
             ...lTalentData,

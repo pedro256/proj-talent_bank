@@ -1,7 +1,7 @@
-import {object,string,number,date} from 'joi'
+import {object,string,number,date,array} from 'joi'
 import { CreateOrUpdateTalentDto } from '../dto/create-update-talent.dto'
 
-export const saveTalentSchema = object<CreateOrUpdateTalentDto>({
+export const saveTalentSchema = object<CreateOrUpdateTalentDto>().keys({
     name: string().required().min(1),
     description: string(),
     default_phone: number().min(0),
@@ -10,5 +10,9 @@ export const saveTalentSchema = object<CreateOrUpdateTalentDto>({
     second_email:string().email(),
     address:string(),
     birth_date:date(),
-    create_by_user:number().required().min(1)
+    create_by_user:number().required().min(1),
+})
+
+export const saveTalentWithSkills = saveTalentSchema.keys({
+    skills: array().items(object())
 })

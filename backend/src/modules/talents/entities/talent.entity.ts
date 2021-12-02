@@ -1,6 +1,9 @@
 import { EntityBase } from "src/common/entity/entity.base";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Skill } from "src/modules/skills/entities/skill.entity";
+import { TalentsSkill } from "../entities/talents-skill.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ITalent } from "../models/talents.model";
+import TalentParser from "../parser/talent-parser.parser";
 
 @Entity('talents')
 export class Talent implements EntityBase,ITalent {
@@ -33,6 +36,24 @@ export class Talent implements EntityBase,ITalent {
 
     @Column()
     create_by_user: number;
+
+    /*
+    @ManyToMany(()=> Skill)
+    @JoinTable({
+        name:'talent_skills',
+        joinColumn:{
+            name:'talent_id',
+            referencedColumnName:"id"
+        },
+        inverseJoinColumn:{
+            name:"skill_id",
+            referencedColumnName:"id"
+        }
+    })
+    skills?:Skill[]
+    */
+    @OneToMany(type => TalentsSkill, talentSkills => talentSkills.talent)
+    talentSkill:TalentsSkill[]
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
     created_at: Date;

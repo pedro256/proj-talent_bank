@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put } from '@nestjs/common';
-import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put, Query } from '@nestjs/common';
+import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JoiValidatePipe } from 'src/common/pipes/joi-valid.pipe';
 import { CreateOrUpdateTalentDto } from './dto/create-update-talent.dto';
-import { saveTalentSchema } from './schema/talent.schema';
+import { SaveTalentAndSkills } from './dto/save-talent-and-skills.dto';
+import { TalentQuery } from './query/talent-query.query';
+import { saveTalentSchema, saveTalentWithSkills } from './schema/talent.schema';
 import CreateTalentService from './services/create-talent.service';
+import CreateTalentWithSkillsService from './services/create-talents-with-skills.service';
 import { DeleteTalentService } from './services/delete-talent.service';
 import ListOneTalentService from './services/list-one-talent.service';
 import ListTalentService from './services/list-talents.service';
@@ -17,13 +20,23 @@ export class TalentsController {
     private readonly listOneTalentService:ListOneTalentService,
     private readonly createTalentService:CreateTalentService,
     private readonly updateTalentService:UpdateTalentService,
-    private readonly deleteTalentService:DeleteTalentService
+    private readonly deleteTalentService:DeleteTalentService,
+    private readonly createTalentWithSkills:CreateTalentWithSkillsService
   ) {}
 
   @HttpCode(HttpStatus.OK)
   @Get()
-  async findAll():Promise<any> {
-    return this.listTalentsService.execute()
+  @ApiQuery({name:'name',type:String,required:false})
+  @ApiQuery({name:'local',type:String,required:false})
+  @ApiQuery({name:'skills_id',type:Number,required:false,isArray:true})
+  async findAll(
+    @Query('name') name:string,
+    @Query('local') address:string,
+    @Query('skills_id') skills_id:number[]
+  ):Promise<any> {
+    return this.listTalentsService.execute(
+      new TalentQuery(name,address,skills_id)
+      )
   }
 
   @HttpCode(HttpStatus.OK)
@@ -38,12 +51,23 @@ export class TalentsController {
   @HttpCode(HttpStatus.CREATED)
   @Post()
   @ApiBody({type:CreateOrUpdateTalentDto})
-  create(
+  createOneAnemic(
     @Body(
       new JoiValidatePipe(saveTalentSchema)
     ) createTalentDto: CreateOrUpdateTalentDto
     ) :Promise<any>{
     return this.createTalentService.execute(createTalentDto)
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post('talent-skills')
+  @ApiBody({type:SaveTalentAndSkills})
+  createOne(
+    @Body(
+      new JoiValidatePipe(saveTalentWithSkills)
+    ) talentDto:SaveTalentAndSkills
+  ){
+    return this.createTalentWithSkills.execute(talentDto)
   }
 
   
