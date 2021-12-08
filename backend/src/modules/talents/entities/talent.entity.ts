@@ -37,7 +37,7 @@ export class Talent implements EntityBase,ITalent {
     @Column()
     create_by_user: number;
 
-    /*
+    
     @ManyToMany(()=> Skill)
     @JoinTable({
         name:'talent_skills',
@@ -51,7 +51,7 @@ export class Talent implements EntityBase,ITalent {
         }
     })
     skills?:Skill[]
-    */
+    
     @OneToMany(type => TalentsSkill, talentSkills => talentSkills.talent)
     talentSkill:TalentsSkill[]
 
