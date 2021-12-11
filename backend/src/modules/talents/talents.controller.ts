@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put, Query } from '@nestjs/common';
-import { ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, Put, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { JoiValidatePipe } from 'src/common/pipes/joi-valid.pipe';
+import { JwtAuthGuard } from '../auth/shared/jwt-auth.guard';
 import { CreateOrUpdateTalentDto } from './dto/create-update-talent.dto';
 import { SaveTalentAndSkills } from './dto/save-talent-and-skills.dto';
 import { TalentQuery } from './query/talent-query.query';
@@ -24,8 +25,11 @@ export class TalentsController {
     private readonly createTalentWithSkills:CreateTalentWithSkillsService
   ) {}
 
+
+  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)
   @Get()
+  @ApiBearerAuth()
   @ApiQuery({name:'name',type:String,required:false})
   @ApiQuery({name:'local',type:String,required:false})
   @ApiQuery({name:'skills_id',type:Number,required:false,isArray:true})

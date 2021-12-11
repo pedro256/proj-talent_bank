@@ -1,8 +1,8 @@
 import { EntityBase } from "src/common/entity/entity.base";
 import ITalentSkill from "../models/talent-skill.model";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Talent } from "src/modules/talents/entities/talent.entity";
-import { Skill } from "src/modules/skills/entities/skill.entity";
+import { Talent } from "../../talents/entities/talent.entity";
+import { Skill } from "../../skills/entities/skill.entity";
 
 @Entity('talent_skills')
 export class TalentsSkill implements EntityBase,ITalentSkill {

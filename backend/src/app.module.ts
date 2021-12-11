@@ -5,6 +5,7 @@ import appConfig from './configs/app.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SkillsModule } from './modules/skills/skills.module';
 import { TalentsModule } from './modules/talents/talents.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { TalentsModule } from './modules/talents/talents.module';
     ,
     UserModule,
     SkillsModule,
-    TalentsModule
+    TalentsModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],

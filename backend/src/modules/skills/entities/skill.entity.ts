@@ -1,8 +1,7 @@
 import { EntityBase } from "src/common/entity/entity.base";
-import { TalentsSkill } from "src/modules/talents/entities/talents-skill.entity"; 
-import { Talent } from "src/modules/talents/entities/talent.entity";
-import { User } from "src/modules/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { TalentsSkill } from "../../talents/entities/talents-skill.entity"; 
+import { User } from "../../user/entities/user.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ISkills } from "../model/skill.model";
 
 @Entity('skills')
